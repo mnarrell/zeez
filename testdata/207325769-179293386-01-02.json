@@ -1,0 +1,63 @@
+{
+  "action": "create",
+  "assets": [
+    {
+      "uri": "https://s3.amazonaws.com/stockcontent-asset-drop/loopingvideo/207325769-179293386-01-02.mp4",
+      "metadata": {
+        "headline": "Loop of Two Tall Pine Trees and Milky Way Abstract Star Trails Night Time Lapse",
+        "keywords": [
+          "two",
+          "tall",
+          "pine",
+          "trees",
+          "milky way",
+          "abstract",
+          "star trails",
+          "night",
+          "time lapse",
+          "20 seconds or greater",
+          "2017",
+          "4k resolution",
+          "abundance",
+          "astronomy",
+          "beauty in nature",
+          "color image",
+          "directly below",
+          "horizontal",
+          "mystery",
+          "no people",
+          "oregon",
+          "us state",
+          "outdoors",
+          "part of a series",
+          "pattern",
+          "portland",
+          "scenics",
+          "nature",
+          "silhouette",
+          "space",
+          "space exploration",
+          "space and astronomy",
+          "spiral",
+          "star trail",
+          "tranquil",
+          "tree",
+          "usa",
+          "wide shot",
+          "loop",
+          "looped",
+          "looping",
+          "ASVL1"
+        ],
+        "licenseType": "commercial",
+        "premiumLevel": 3
+      },
+      "partnerAssetId": "207325769-179293386-01-02",
+      "assetType": "video",
+      "height": 1080,
+      "width": 1920
+    }
+  ],
+  "contributorId": 207325769,
+  "version": "1.0.0"
+}

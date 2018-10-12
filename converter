@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+
+import csv
+import json
+import os
+import sys
+
+# CSV indexes
+action = 0
+licenseType = 1
+premiumLevel =2
+assetType = 3
+partnerAssetId = 4
+contributorId = 5
+sourceContentId = 6
+width = 7
+height = 8
+headline = 9
+keywords = 10
+uri = 11
+rating = 12
+preview = 13
+moderation = 14
+
+inputFile = sys.argv[1]
+
+print "Converting %s " % (inputFile)
+
+if not os.path.exists("output"):
+    os.makedirs("output")
+
+with open(inputFile) as csvfile:
+    reader = csv.reader(csvfile)
+    next(reader, None)  # skip the headers
+    for row in reader:
+        out = open("output/" + row[partnerAssetId] + ".json", 'w')
+        metadata = {}
+        metadata["headline"] = row[headline]
+        metadata["keywords"] = row[keywords].split(",") # keywords as array
+        metadata["licenseType"] = row[licenseType]
+        metadata["premiumLevel"] = int(row[premiumLevel])
+
+        asset = {}
+        asset["uri"] = row[uri]
+        asset["metadata"] = metadata
+        asset["partnerAssetId"] = row[partnerAssetId]
+        asset["assetType"] = row[assetType]
+        asset["height"] = int(row[height])
+        asset["width"] = int(row[width])
+
+        j = {}
+        j["version"] = "1.0.0"
+        j["contributorId"] = int(row[contributorId])
+        j["action"] = row[action]
+        j["assets"] = [asset]
+
+        doc = json.dumps(j, indent=4)
+        print >> out, doc
+        out.close()
+
+csvfile.close()
