@@ -46,15 +46,16 @@ def convert(input_file, output_dir):
                         "keywords": row[KEYWORDS].split(","),
                         "licenseType": row[LICENSE_TYPE],
                         "premiumLevel": int(row[PREMIUM_LEVEL])
-                        },
+                    },
                     "partnerAssetId": row[PARTNER_ASSET_ID],
                     "assetType": row[ASSET_TYPE],
                     "height": int(row[HEIGHT]),
                     "width": int(row[WIDTH])
-                    }]
-                }
+                }]
+            }
 
-            out = open(output_dir + row[PARTNER_ASSET_ID] + ".json", 'w')
+            out = open(
+                os.path.join(output_dir, row[PARTNER_ASSET_ID] + ".json"), 'w')
             print >> out, json.dumps(doc, indent=4)
             out.close()
 
