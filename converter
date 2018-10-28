@@ -1,71 +1,59 @@
 #!/usr/bin/env python
-""" CSV converter for Zisa """
+"""CSV converter for Zisa"""
 
 import csv
 import json
 import os
 import sys
 
-# CSV indexes
-ACTION = 0
-LICENSE_TYPE = 1
-PREMIUM_LEVEL = 2
-ASSET_TYPE = 3
-PARTNER_ASSET_ID = 4
-CONTRIBUTOR_ID = 5
-SOURCE_CONTENT_ID = 6
-WIDTH = 7
-HEIGHT = 8
-HEADLINE = 9
-KEYWORDS = 10
-URI = 11
-RATING = 12
-PREVIEW = 13
-MODERATION = 14
+from collections import namedtuple
+from itertools import imap
 
 
 def convert(input_file, output_dir):
-    """ Converts the CSV input_file to JSON per row. """
-    print "Converting %s to %s" % (input_file, output_dir)
+    """Converts the CSV input_file to JSON per row."""
+
+    print 'Converting %s to %s' % (input_file, output_dir)
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     with open(input_file) as csvfile:
         reader = csv.reader(csvfile)
-        next(reader, None)  # skip the headers
-        for row in reader:
+        Row = namedtuple('Row', next(reader))
+        for row in imap(Row._make, reader):
             doc = {
                 "version": "1.0.0",
-                "contributorId": int(row[CONTRIBUTOR_ID]),
-                "action": row[ACTION],
+                "contributorId": row.contributorId,
+                "action": row.action,
                 "assets": [{
-                    "uri": row[URI],
+                    "uri": row.uri,
                     "metadata": {
-                        "headline": row[HEADLINE],
-                        "keywords": row[KEYWORDS].split(","),
-                        "licenseType": row[LICENSE_TYPE],
-                        "premiumLevel": int(row[PREMIUM_LEVEL])
+                        "headline": row.headline,
+                        "keywords": row.keywords.split(","),
+                        "licenseType": row.licenseType,
+                        "premiumLevel": int(row.premiumLevel)
                     },
-                    "partnerAssetId": row[PARTNER_ASSET_ID],
-                    "assetType": row[ASSET_TYPE],
-                    "height": int(row[HEIGHT]),
-                    "width": int(row[WIDTH])
+                    "partnerAssetId": row.partnerAssetId,
+                    "assetType": row.assetType,
+                    "height": int(row.height),
+                    "width": int(row.width)
                 }]
             }
 
             out = open(
-                os.path.join(output_dir, row[PARTNER_ASSET_ID] + ".json"), 'w')
+                os.path.join(output_dir, row.partnerAssetId + '.json'), 'w')
+
             print >> out, json.dumps(doc, indent=4)
             out.close()
 
     csvfile.close()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     if len(sys.argv) != 3:
-        print "Usage:"
-        print " $ converter <some_csv_file.csv> /some/output/path"
+        print 'Usage:'
+        print ' $ converter <some_csv_file.csv> /some/output/path'
         sys.exit(1)
 
     convert(sys.argv[1], sys.argv[2])
